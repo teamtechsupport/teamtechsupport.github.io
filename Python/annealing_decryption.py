@@ -52,7 +52,7 @@ def findneighbor(key):
     return "".join(keylist)
 
 
-def anneal(text, cipher):
+def anneal(text, key, ciphertype):
     ngram = ngram_obj("https://pastebin.com/raw/ZP7PWFdQ")
     cost = ngram.cost(text)
     temp = 1.0
@@ -63,7 +63,7 @@ def anneal(text, cipher):
     while temp > tempmin:
         for x in range(1, iters):
             newkey = findneighbor(key)
-            newcost = ngram.cost(decrypt.decrypt(text, key, cipher))
+            newcost = ngram.cost(decrypt.decrypt(text, newkey, ciphertype))
 
             ap = acceptprob(newcost, cost, temp)
             if ap > random.random():
@@ -72,4 +72,4 @@ def anneal(text, cipher):
                 acc += 1
 
         temp *= alpha  # slowly reduce temp
-    return(str(acc) + decrypt.decrypt(text, key, cipher))
+    return(str(acc) + decrypt.decrypt(text, key, ciphertype))

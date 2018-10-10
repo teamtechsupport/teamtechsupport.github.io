@@ -11,8 +11,11 @@ def transpos(text, colno):
     for x in range(len(rows)):
         for y in range(len(rows[x])):
             columns[y].append(list(rows[x][y]).pop())
-    print(rows)
-    print(columns)
+    orderedtext
+    for x in range(len(columns)):
+        for y in columns[x]:
+
+    print(annealing_decryption.anneal(regex.sub('', userinput), key, ciphertype))
 
 
 userinput = input("Enter encoded text:\n").upper()
