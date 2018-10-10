@@ -1,11 +1,11 @@
 # http://katrinaeg.com/simulated-annealing.html
 # http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
+import decrypt
 import requests
 import string
 import random
 import math
 import re
-import decrypt
 
 
 class ngram_obj(object):
@@ -38,7 +38,12 @@ class ngram_obj(object):
 
 def acceptprob(ncost, ocost, temp):
     # equation inspired by metalworking hence the name
-    return(math.exp(ncost-ocost)/temp)
+    try:
+        return(math.exp(ncost-ocost)/temp)
+    except:
+        print(ncost)
+        print(ocost)
+        print((ncost-ocost)/temp)
 
 
 def findneighbor(key):
@@ -54,7 +59,7 @@ def findneighbor(key):
 
 def anneal(text, key, ciphertype):
     ngram = ngram_obj("https://pastebin.com/raw/ZP7PWFdQ")
-    cost = ngram.cost(text)
+    cost = ngram.cost(decrypt.decrypt(text, key, ciphertype))
     temp = 1.0
     tempmin = 0.0001
     alpha = 0.99  # multiplication factor

@@ -1,5 +1,6 @@
 # this script is for decypting various ciphers when provided with a key
 import string
+import math
 
 
 def decrypt(encoded, key, ciphertype):
@@ -11,25 +12,26 @@ def decrypt(encoded, key, ciphertype):
             decrypted += sol[l]
         return decrypted
     elif ciphertype == "transposition":
-        columns = []
+        key = list(key)
+        rows = []
         colno = len(key)
-        rows = [encoded[i:i+colno] for i in range(0, len(encoded), colno)]
-        for x in range(len(rows[0])):
-            columns.append([])
-        for x in range(len(rows)):
-            for y in range(len(rows[x])):
-                columns[y].append(list(rows[x][y]).pop())
+        rowno = math.ceil(len(encoded)/colno)
+        columns = [encoded[i:i+rowno] for i in range(0, len(encoded), rowno)]
 
         neworder = []
-        for x in range(len(list(key))):
-            neworder.append(columns[int(key[x])-1])
-        print(neworder)
-        print(columns)
+        for x in key:
+            neworder.append(columns[int(x)-1])
 
-        for x in range(len(rows[0])):
-            for y in range(len(neworder)):
-                try:
-                    decrypted += neworder[y][x]
-                except:
-                    pass
+        # for x in range(rowno):
+        #    neworder.append([])
+        for x in range(len(neworder[0])):
+            for y in range(colno):
+                decrypted += neworder[y][x]
+
+        # for x in range(colno):
+        #    for y in range(len(rows)):
+        #        try:
+        #            decrypted += neworder[x][y]
+        #        except:
+        #            pass
         return decrypted

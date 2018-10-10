@@ -4,18 +4,10 @@ import random
 
 
 def transpos(text, colno):
-    columns = []
-    rows = [text[i:i+colno] for i in range(0, len(text), colno)]
-    for l in range(len(rows[0])):
-        columns.append([])
-    for x in range(len(rows)):
-        for y in range(len(rows[x])):
-            columns[y].append(list(rows[x][y]).pop())
-    orderedtext
-    for x in range(len(columns)):
-        for y in columns[x]:
+    key = "12345"
 
-    print(annealing_decryption.anneal(regex.sub('', userinput), key, ciphertype))
+    print(annealing_decryption.anneal(
+        text, key, "transposition"))
 
 
 userinput = input("Enter encoded text:\n").upper()

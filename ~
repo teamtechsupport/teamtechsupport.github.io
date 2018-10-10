@@ -1,0 +1,15 @@
+stuff
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   Python/__pycache__/annealing_decryption.cpython-36.pyc
+#	modified:   Python/annealing_decryption.py
+#	modified:   Python/column_transposition.py
+#	modified:   Python/substitution.py
+#
+# Untracked files:
+#	Python/__pycache__/decrypt.cpython-36.pyc
+#
