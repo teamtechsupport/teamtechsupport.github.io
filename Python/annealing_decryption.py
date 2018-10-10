@@ -81,4 +81,4 @@ def anneal(text):
                 acc += 1
 
         temp *= alpha  # slowly reduce temp
-    print(str(acc) + decrypt(text, key))
+    return(str(acc) + decrypt(text, key))
