@@ -5,6 +5,7 @@ import string
 import random
 import math
 import re
+import decrypt
 
 
 class ngram_obj(object):
@@ -40,15 +41,6 @@ def acceptprob(ncost, ocost, temp):
     return(math.exp(ncost-ocost)/temp)
 
 
-def decrypt(text, key):
-    decrypted = ""
-    # create a dictionary with each letter of the key corresponding to a letter in the text
-    sol = dict(zip(string.ascii_uppercase, key))
-    for l in text:
-        decrypted += sol[l]
-    return decrypted
-
-
 def findneighbor(key):
     keylist = list(key)
     # store the two letters locations being swapped
@@ -60,10 +52,9 @@ def findneighbor(key):
     return "".join(keylist)
 
 
-def anneal(text):
+def anneal(text, cipher):
     ngram = ngram_obj("https://pastebin.com/raw/ZP7PWFdQ")
     cost = ngram.cost(text)
-    key = string.ascii_uppercase
     temp = 1.0
     tempmin = 0.0001
     alpha = 0.99  # multiplication factor
@@ -72,7 +63,7 @@ def anneal(text):
     while temp > tempmin:
         for x in range(1, iters):
             newkey = findneighbor(key)
-            newcost = ngram.cost(decrypt(text, newkey))
+            newcost = ngram.cost(decrypt.decrypt(text, key, cipher))
 
             ap = acceptprob(newcost, cost, temp)
             if ap > random.random():
@@ -81,4 +72,4 @@ def anneal(text):
                 acc += 1
 
         temp *= alpha  # slowly reduce temp
-    return(str(acc) + decrypt(text, key))
+    return(str(acc) + decrypt.decrypt(text, key, cipher))
