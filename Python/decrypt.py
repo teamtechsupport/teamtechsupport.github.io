@@ -13,21 +13,31 @@ def decrypt(encoded, key, ciphertype):
         return decrypted
     elif ciphertype == "transposition":
         key = list(key)
-        rows = []
+        columns = []
         colno = len(key)
-        rowno = math.ceil(len(encoded)/colno)
-        columns = [encoded[i:i+rowno] for i in range(0, len(encoded), rowno)]
-        print(columns)
+        rowno = math.floor(len(encoded)/colno)
+        extrachars = len(encoded) % colno
+        offset = 0
+        for i in range(0, len(encoded), rowno):
+            if extrachars > 0:
+                columns.append(encoded[i+offset:i+rowno+offset+1])
+                extrachars -= 1
+                offset += 1
+            else:
+                columns.append(encoded[i+offset:i+rowno+offset])
+        if colno < len(columns):
+            del columns[-1]
+
         neworder = []
         for x in key:
             neworder.append(columns[int(x)-1])
 
         # for x in range(rowno):
         #    neworder.append([])
-        print(neworder)
+        # print(neworder)
         for x in range(len(neworder[0])):
             for y in range(colno):
-                print(x,y)
+                # print(x,y)
                 try:
                     decrypted += neworder[y][x]
                 except:
