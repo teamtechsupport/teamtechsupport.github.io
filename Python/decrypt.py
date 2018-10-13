@@ -46,25 +46,11 @@ def decrypt(encoded, key, ciphertype):
     # IF THE CIPHERTEXT LETTER IS P AND THE KEY LETTER IS M, DO AN M CAESAR SHIFT (+12) Then find then find P in the list (4th letter) to get D (4th in alpha)
     elif ciphertype == "vigenere":
         key = list(key)
+        print(key)
         keyindex = 0
         offset = 0
-        for x in encoded:
-            offset = letvals[key[keyindex]]
-            if offset+letvals[x] > 26:
-                letval = letvals[x] + offset - 26
-            else:
-                letval = letvals[x] + offset
-            print(letval, letvals[x], offset, x, key[keyindex])
-
-            for let, val in letvals.items():
-                if val == letval:
-                    decrypted += let
-            keyindex += 1
-
-            if keyindex >= len(key):
-                keyindex = 0
 
     return decrypted
 
 
-print(decrypt("PEZO", "MEME", "vigenere"))
+print(decrypt("PEZOTTTTTTTTTTTT", "MEME", "vigenere"))
