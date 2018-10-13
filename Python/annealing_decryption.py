@@ -41,15 +41,17 @@ def acceptprob(ncost, ocost, temp):
     try:
         return(math.exp(ncost-ocost)/temp)
     except:
-        print(ncost)
-        print(ocost)
-        print((ncost-ocost)/temp)
+        pass
 
 
-def findneighbor(key):
+def findneighbor(key, ciphertype):
     keylist = list(key)
     # store the two letters locations being swapped
-    swaploc = [random.randint(0, len(key)-1), random.randint(0, len(key)-1)]
+    # if ciphertype == "transposition":
+    # swaploc.append(swaploc[0]+1)
+    # else:
+    swaploc = [random.randint(0, len(key)-1),
+               random.randint(0, len(key)-1)]
     # store the two letters being swapped
     swaplet = [keylist[swaploc[0]], keylist[swaploc[1]]]
     keylist[swaploc[0]] = swaplet[1]
@@ -67,11 +69,16 @@ def anneal(text, key, ciphertype):
     acc = 0
     while temp > tempmin:
         for x in range(1, iters):
-            newkey = findneighbor(key)
+            newkey = findneighbor(key, ciphertype)
             newcost = ngram.cost(decrypt.decrypt(text, newkey, ciphertype))
 
             ap = acceptprob(newcost, cost, temp)
-            if ap > random.random():
+            try:
+                if ap > random.random():
+                    key = newkey
+                    cost = newcost
+                    acc += 1
+            except:
                 key = newkey
                 cost = newcost
                 acc += 1

@@ -6,8 +6,6 @@ import math
 
 def transpos(text, colno):
     key = str(math.floor(1234567890 / (10**(10-colno))))
-    print(key)
-    
 
     print(annealing_decryption.anneal(
         text, key, "transposition"))
