@@ -4,7 +4,7 @@ import math
 
 alpha = string.ascii_uppercase
 letvals = dict(zip(string.ascii_uppercase, list(range(1, 27))))
-
+letvalsrev = dict(zip(list(range(1, 27)),string.ascii_uppercase))
 
 def decrypt(encoded, key, ciphertype):
     decrypted = ""
@@ -45,12 +45,44 @@ def decrypt(encoded, key, ciphertype):
                     pass  # only some columns will have an extrachar so instead of excepting continue
     # IF THE CIPHERTEXT LETTER IS P AND THE KEY LETTER IS M, DO AN M CAESAR SHIFT (+12) Then find then find P in the list (4th letter) to get D (4th in alpha)
     elif ciphertype == "vigenere":
+        def shift(l, n):
+            return l[n:] + l[:n]
+        
         key = list(key)
-        print(key)
-        keyindex = 0
-        offset = 0
+        
+        keyext = []
+        for x in range(len(encoded)):
+            print(key[x%4])
+            keyext.append(key[x%4])
+        print(keyext)
+
+        encodedvals = []
+        for x in encoded:
+            encodedvals.append(letvals[x])
+            
+        keyvals = []
+        for x in keyext:
+            keyvals.append(letvals[x])
+
+        
+        for x in range(len(encodedvals)):
+            shifted=shift(alpha, encodedvals[x])
+            decryptedval=shifted.index(keyext[x])
+            decrypted+=letvalsrev[decryptedval]
+
+        print(decrypted)
+            
+            
+            
+            
+            
+            
+
+        
+            
+        
 
     return decrypted
 
 
-print(decrypt("PEZOTTTTTTTTTTTT", "MEME", "vigenere"))
+print(decrypt("PEZO", "MEME", "vigenere"))
