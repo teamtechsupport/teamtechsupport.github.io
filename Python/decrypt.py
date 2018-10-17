@@ -52,9 +52,7 @@ def decrypt(encoded, key, ciphertype):
         
         keyext = []
         for x in range(len(encoded)):
-            print(key[x%4])
-            keyext.append(key[x%4])
-        print(keyext)
+            keyext.append(key[x%len(key)])
 
         encodedvals = []
         for x in encoded:
@@ -66,23 +64,11 @@ def decrypt(encoded, key, ciphertype):
 
         
         for x in range(len(encodedvals)):
-            shifted=shift(alpha, encodedvals[x])
-            decryptedval=shifted.index(keyext[x])
+            shifted=shift(alpha, keyvals[x]-1)
+            decryptedval=shifted.index(encoded[x])+1
             decrypted+=letvalsrev[decryptedval]
-
-        print(decrypted)
-            
-            
-            
-            
-            
             
 
-        
-            
         
 
     return decrypted
-
-
-print(decrypt("PEZO", "MEME", "vigenere"))

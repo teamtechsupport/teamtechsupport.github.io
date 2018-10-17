@@ -44,22 +44,29 @@ def acceptprob(ncost, ocost, temp):
         pass
 
 
-def findneighbor(key, ciphertype):
-    keylist = list(key)
-    # store the two letters locations being swapped
-    # if ciphertype == "transposition":
-    # swaploc.append(swaploc[0]+1)
-    # else:
-    swaploc = [random.randint(0, len(key)-1),
-               random.randint(0, len(key)-1)]
-    # store the two letters being swapped
-    swaplet = [keylist[swaploc[0]], keylist[swaploc[1]]]
-    keylist[swaploc[0]] = swaplet[1]
-    keylist[swaploc[1]] = swaplet[0]  # swap the two letters
+def findneighbor(key, keytype, keybreak):
+    if keybreak == "":
+        keylist = list(key)
+    else:
+        keylist = key.split(keybreak)
+
+    if keytype == "swap":
+        # store the two letters locations being swapped
+        # if ciphertype == "transposition":
+        # swaploc.append(swaploc[0]+1)
+        # else:
+        swaploc = [random.randint(0, len(key)-1),
+                   random.randint(0, len(key)-1)]
+        # store the two letters being swapped
+        swaplet = [keylist[swaploc[0]], keylist[swaploc[1]]]
+        keylist[swaploc[0]] = swaplet[1]
+        keylist[swaploc[1]] = swaplet[0]  # swap the two letters
+    elif keytype == "rand":
+        keylist[random.randint(0, len(keylist)-1)] = string.ascii_uppercase[random.randint(0, len(string.ascii_uppercase)-1)]
     return "".join(keylist)
 
 
-def anneal(text, key, ciphertype):
+def anneal(text, key, ciphertype, keytype, keybreak):
     ngram = ngram_obj("https://pastebin.com/raw/ZP7PWFdQ")
     cost = ngram.cost(decrypt.decrypt(text, key, ciphertype))
     temp = 1.0
@@ -69,7 +76,7 @@ def anneal(text, key, ciphertype):
     acc = 0
     while temp > tempmin:
         for x in range(1, iters):
-            newkey = findneighbor(key, ciphertype)
+            newkey = findneighbor(key, keytype, keybreak)
             newcost = ngram.cost(decrypt.decrypt(text, newkey, ciphertype))
 
             ap = acceptprob(newcost, cost, temp)
