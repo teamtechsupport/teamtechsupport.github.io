@@ -67,8 +67,30 @@ def decrypt(encoded, key, ciphertype):
             shifted=shift(alpha, keyvals[x]-1)
             decryptedval=shifted.index(encoded[x])+1
             decrypted+=letvalsrev[decryptedval]
+
+    elif ciphertype == "autokey":
+        def shift(l, n):
+            return l[n:] + l[:n]
+        
+        key = list(key)
+
+        encodedvals = []
+        for x in encoded:
+            encodedvals.append(letvals[x])
+            
+        keyvals = []
+        for x in key:
+            keyvals.append(letvals[x])
+
+        
+        for x in range(len(encodedvals)):
+            shifted=shift(alpha, keyvals[x]-1)
+            decryptedval=shifted.index(encoded[x])+1
+            keyvals.append(letvals[letvalsrev[decryptedval]])
+            decrypted+=letvalsrev[decryptedval]
             
 
         
 
     return decrypted
+

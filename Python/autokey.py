@@ -9,7 +9,7 @@ def vigenere(text, keylen):
     key = "A"*keylen
 
     print(annealing_decryption.anneal(
-        text, key, "vigenere", "rand", ""))
+        text, key, "autokey", "rand", ""))
 
 userinput = input("Enter encoded text:\n").upper()
 regex = re.compile('[^A-Z]')
@@ -18,7 +18,7 @@ try:
     keylen = int(
         input("Enter number of letters in key; if unknown enter '0' to cycle through 2-20: "))
 except:
-    print("Not an integer, cycling through possibilities 2-20.")
+    print("Not an integer, cycling through possibilities 1-20.")
     keylen = 1
 
 if keylen > 1:
