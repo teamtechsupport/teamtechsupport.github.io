@@ -4,7 +4,8 @@ import math
 
 alpha = string.ascii_uppercase
 letvals = dict(zip(string.ascii_uppercase, list(range(1, 27))))
-letvalsrev = dict(zip(list(range(1, 27)),string.ascii_uppercase))
+letvalsrev = dict(zip(list(range(1, 27)), string.ascii_uppercase))
+
 
 def decrypt(encoded, key, ciphertype):
     decrypted = ""
@@ -47,50 +48,44 @@ def decrypt(encoded, key, ciphertype):
     elif ciphertype == "vigenere":
         def shift(l, n):
             return l[n:] + l[:n]
-        
+
         key = list(key)
-        
+
         keyext = []
         for x in range(len(encoded)):
-            keyext.append(key[x%len(key)])
+            keyext.append(key[x % len(key)])
 
         encodedvals = []
         for x in encoded:
             encodedvals.append(letvals[x])
-            
+
         keyvals = []
         for x in keyext:
             keyvals.append(letvals[x])
 
-        
         for x in range(len(encodedvals)):
-            shifted=shift(alpha, keyvals[x]-1)
-            decryptedval=shifted.index(encoded[x])+1
-            decrypted+=letvalsrev[decryptedval]
+            shifted = shift(alpha, keyvals[x]-1)
+            decryptedval = shifted.index(encoded[x])+1
+            decrypted += letvalsrev[decryptedval]
 
     elif ciphertype == "autokey":
         def shift(l, n):
             return l[n:] + l[:n]
-        
+
         key = list(key)
 
         encodedvals = []
         for x in encoded:
             encodedvals.append(letvals[x])
-            
+
         keyvals = []
         for x in key:
             keyvals.append(letvals[x])
 
-        
         for x in range(len(encodedvals)):
-            shifted=shift(alpha, keyvals[x]-1)
-            decryptedval=shifted.index(encoded[x])+1
+            shifted = shift(alpha, keyvals[x]-1)
+            decryptedval = shifted.index(encoded[x])+1
             keyvals.append(letvals[letvalsrev[decryptedval]])
-            decrypted+=letvalsrev[decryptedval]
-            
-
-        
+            decrypted += letvalsrev[decryptedval]
 
     return decrypted
-

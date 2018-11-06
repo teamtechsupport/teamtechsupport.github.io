@@ -8,5 +8,6 @@ ciphertype = "substitution"
 userinput = input("Enter encoded text:\n").upper()
 print(userinput)
 regex = re.compile('[^A-Z]')
-print(regex.sub('', userinput), "HE")
-print(annealing_decryption.anneal(regex.sub('', userinput), key, ciphertype, "swap", ""))
+print(regex.sub('', userinput))
+print(annealing_decryption.anneal(
+    regex.sub('', userinput), key, ciphertype, "swap", ""))

@@ -57,17 +57,21 @@ def findneighbor(key, keytype, keybreak):
         # else:
         swaploc = [random.randint(0, len(key)-1),
                    random.randint(0, len(key)-1)]
+
         # store the two letters being swapped
         swaplet = [keylist[swaploc[0]], keylist[swaploc[1]]]
         keylist[swaploc[0]] = swaplet[1]
         keylist[swaploc[1]] = swaplet[0]  # swap the two letters
     elif keytype == "rand":
-        keylist[random.randint(0, len(keylist)-1)] = string.ascii_uppercase[random.randint(0, len(string.ascii_uppercase)-1)]
+        keylist[random.randint(0, len(
+            keylist)-1)] = string.ascii_uppercase[random.randint(0, len(string.ascii_uppercase)-1)]
     return "".join(keylist)
 
 
 def anneal(text, key, ciphertype, keytype, keybreak):
-    ngram = ngram_obj("https://pastebin.com/raw/ZP7PWFdQ")
+    highestkey = key
+    ngram = ngram_obj(
+        "https://gist.githubusercontent.com/DomDale/9a582deed33b20bb47e0363301d2c6c4/raw/62e7416f6be95893649398f0470f1dcd2668e608/english_trigrams.txt")
     cost = ngram.cost(decrypt.decrypt(text, key, ciphertype))
     temp = 1.0
     tempmin = 0.0001
@@ -91,4 +95,4 @@ def anneal(text, key, ciphertype, keytype, keybreak):
                 acc += 1
 
         temp *= alpha  # slowly reduce temp
-    return(str(acc) + decrypt.decrypt(text, key, ciphertype))
+    return(decrypt.decrypt(text, key, ciphertype))

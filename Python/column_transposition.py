@@ -8,7 +8,7 @@ def transpos(text, colno):
     key = str(math.floor(1234567890 / (10**(10-colno))))
 
     print(annealing_decryption.anneal(
-        text, key, "transposition", "swap",""))
+        text, key, "transposition", "swap", ""))
 
 
 userinput = input("Enter encoded text:\n").upper()
