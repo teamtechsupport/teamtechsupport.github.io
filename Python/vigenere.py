@@ -3,13 +3,17 @@ import re
 import random
 import math
 import string
+from threading import Thread
 
-#http://practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-vigenere-cipher-part-2/
+# http://practicalcryptography.com/cryptanalysis/stochastic-searching/cryptanalysis-vigenere-cipher-part-2/
+
+
 def vigenere(text, keylen):
     key = "A"*keylen
 
     print(annealing_decryption.anneal(
         text, key, "vigenere", "rand", ""))
+
 
 userinput = input("Enter encoded text:\n").upper()
 regex = re.compile('[^A-Z]')
@@ -26,4 +30,6 @@ if keylen > 1:
 
 else:
     for x in range(2, 21):
-        vigenere(regex.sub('', userinput), x)
+        process = Thread(target=vigenere, args=[
+                         regex.sub('', userinput), x])
+        process.start()

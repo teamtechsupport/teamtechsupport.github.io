@@ -69,7 +69,6 @@ def findneighbor(key, keytype, keybreak):
 
 
 def anneal(text, key, ciphertype, keytype, keybreak):
-    highestkey = key
     ngram = ngram_obj(
         "https://gist.githubusercontent.com/DomDale/9a582deed33b20bb47e0363301d2c6c4/raw/62e7416f6be95893649398f0470f1dcd2668e608/english_trigrams.txt")
     cost = ngram.cost(decrypt.decrypt(text, key, ciphertype))

@@ -1,9 +1,35 @@
-import annealing_decryption
 import decrypt
 import re
 import random
 import math
 import itertools
+import requests
+from threading import Thread
+
+
+class ngram_obj(object):
+    def __init__(self, ngrampaste):  # runs on object creation
+        self.ngrams = {}  # create the ngram dict
+        req = requests.get(ngrampaste)  # get the raw ngram paste
+        txt = req.text  # get the text only
+        for ln in txt.splitlines():  # for each line in the text
+            # split it again, assigning each value on that line a variable
+            key, freq = ln.split(" ")
+            self.ngramlen = len(key)
+            # make a new key-int pair with those two variables log10 to reduce the score's size so it can later be inserted into an exponential function (its relative anyway)
+            self.ngrams[key] = int(freq)
+        self.valtotal = sum(self.ngrams.values())
+        for key in list(self.ngrams.keys()):
+            self.ngrams[key] = self.ngrams[key]
+
+    def cost(self, string):  # string is an uppercase est solution
+        cost = 0
+        l = len(string)
+        for i in range(l-(self.ngramlen+1)):  # for length of string - length of ngrams
+            teststr = string[i:i+self.ngramlen]
+            if teststr in self.ngrams:  # check if selected ngram is in the dict
+                cost += self.ngrams[teststr]  # if yes add that word's score
+        return(cost)
 
 
 def transpos(text, colno):
@@ -11,17 +37,20 @@ def transpos(text, colno):
 
     perms = list(itertools.permutations(initkey))
 
-    key=""
+    key = ""
     cost = 0
-    ngram = annealing_decryption.ngram_obj("https://gist.githubusercontent.com/DomDale/9a582deed33b20bb47e0363301d2c6c4/raw/62e7416f6be95893649398f0470f1dcd2668e608/english_trigrams.txt")
+    ngram = ngram_obj(
+        "https://gist.githubusercontent.com/DomDale/9a582deed33b20bb47e0363301d2c6c4/raw/62e7416f6be95893649398f0470f1dcd2668e608/english_trigrams.txt")
     for x in range(len(perms)):
-        newcost = ngram.cost(decrypt.decrypt(text, "".join((perms[x])), "transposition"))
-        print(newcost)
-        if newcost < cost:
+        newcost = ngram.cost(decrypt.decrypt(
+            text, "".join((perms[x])), "transposition"))
+        if newcost > cost:
             cost = newcost
             key = "".join((perms[x]))
-    
-    print(key)
+
+    print(decrypt.decrypt(
+        text, key, "transposition"))
+
 
 userinput = input("Enter encoded text:\n").upper()
 regex = re.compile('[^A-Z]')
@@ -30,12 +59,16 @@ try:
     colno = int(
         input("Enter number of columns; if unknown enter '0' to cycle through 2-20: "))
 except:
-    print("Not an integer, cycling through possibilities 1-20.")
+    print("Not an integer, cycling through possibilities 1-9.")
     colno = 1
 
 if colno > 1:
     transpos(regex.sub('', userinput), colno)
 
 else:
-    for x in range(2, 21):
-        transpos(regex.sub('', userinput), x)
+    threads = []
+    for x in range(2, 10):
+        process = Thread(target=transpos, args=[
+                         regex.sub('', userinput), x])
+        process.start()
+        threads.append(process)
