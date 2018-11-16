@@ -1,15 +1,27 @@
 import annealing_decryption
+import decrypt
 import re
 import random
 import math
+import itertools
 
 
 def transpos(text, colno):
-    key = str(math.floor(1234567890 / (10**(10-colno))))
+    initkey = list(str(math.floor(1234567890 / (10**(10-colno)))))
 
-    print(annealing_decryption.anneal(
-        text, key, "transposition", "swap", ""))
+    perms = list(itertools.permutations(initkey))
 
+    key=""
+    cost = 0
+    ngram = annealing_decryption.ngram_obj("https://gist.githubusercontent.com/DomDale/9a582deed33b20bb47e0363301d2c6c4/raw/62e7416f6be95893649398f0470f1dcd2668e608/english_trigrams.txt")
+    for x in range(len(perms)):
+        newcost = ngram.cost(decrypt.decrypt(text, "".join((perms[x])), "transposition"))
+        print(newcost)
+        if newcost < cost:
+            cost = newcost
+            key = "".join((perms[x]))
+    
+    print(key)
 
 userinput = input("Enter encoded text:\n").upper()
 regex = re.compile('[^A-Z]')
